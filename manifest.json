@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "jshacks",
+  "description": "javascript site hacks",
+  "version": "0.1",
+  "icons": { "32": "32.png","128": "128.png" },
+  "permissions": [ "tabs", "activeTab" ],
+  "browser_action" : {
+		"default_popup": "popup.html"
+	},
+  "background": {
+    "scripts":[  "background.js" ],
+    "persistent":false
+  },
+  "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "content.js" ],
+      "match_about_blank": true,
+      "matches": [ "http://*/*", "https://*/*" ],
+      "run_at": "document_end"
+   }]
+}
