@@ -1,2 +1,8 @@
 # jshacks
-bloque ou débloque certaines fonctionnalités de sites
+_Bloque ou débloque certaines fonctionnalités de certains sites en agissant sur le contenu de la page ou en empêchant un onglets pub, non bloqué, de s'ouvrir._
+
+## Fonctionnalités
+
+* __uptobox.com__ : active le bouton de téléchargement
+* __liens-telechargement.com__ : empêche les onglets de pub de s'ouvrir  
+
