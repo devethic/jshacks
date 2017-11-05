@@ -3,6 +3,5 @@ _Bloque ou débloque certaines fonctionnalités de certains sites en agissant su
 
 ## Fonctionnalités
 
-* __uptobox.com__ : active le bouton de téléchargement
+* __uptobox.com__ : active le bouton de téléchargement, force le https pour le téléchargement
 * __liens-telechargement.com__ : empêche les onglets de pub de s'ouvrir  
-
