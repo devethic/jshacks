@@ -1,8 +1,35 @@
+var currentTab;
 
 chrome.tabs.onCreated.addListener(function(tab) {
   // remove tab opened by specific site for ads
   chrome.tabs.get(tab.openerTabId, (tParent) => {
-    if (/liens-telechargement\.com/i.test(tParent.url))
-      chrome.tabs.remove(tab.id);
+    removeTab(/liens-telechargement\.com/i, tParent.url, tab.id);
   });
 });
+
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+    if (/liens-telechargement\.com/i.test(tab.url)) {
+      // we use alarm to delay content script actions because of jQuery
+      currentTab = tab;
+      chrome.alarms.create("liensTelechargementCom", {"delayInMinutes": 0.1}); // ~5 seconds !!!
+    }
+});
+
+chrome.alarms.onAlarm.addListener(alarm => {
+  //interact with content script
+  if (alarm.name == "liensTelechargementCom")
+    chrome.tabs.sendMessage(currentTab.id, "liensTelechargementCom");
+});
+
+chrome.webRequest.onBeforeRedirect.addListener(details => {
+  removeTab(/pornhub\.com/i, details.url, details.tabId);
+});
+
+////////////////////////////////////////////////////////////////////////////////
+
+function removeTab (regex, url, tabId) {
+  if (regex.test(url)) {
+    console.log("remove tab");
+    chrome.tabs.remove(tabId);
+  }
+}
