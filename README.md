@@ -6,4 +6,4 @@ _Bloque ou débloque certaines fonctionnalités de certains sites en agissant su
 * __uptobox.com__ : active le bouton de téléchargement, force le https pour le téléchargement, clique sur les boutons de téléchargement
 * __liens-telechargement.com__ : empêche les onglets (pub) de s'ouvrir, contourne la détection adblock
 * __1fichier__ : clique sur les boutons de téléchargement
-* __pornhub__ : bloque la redirection au 1er clique
+* __ed-protect.org__ : clique sur le bouton valider (si captcha ok)

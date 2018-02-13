@@ -4,13 +4,13 @@
   "description": "javascript site hacks",
   "version": "0.1",
   "icons": { "32": "32.png","128": "128.png" },
-  "permissions": [ "tabs", "activeTab", "alarms" ],
+  "permissions": [ "tabs", "activeTab", "alarms", "webRequest", "webRequestBlocking", "*://*/*" ],
   "browser_action" : {
 		"default_popup": "popup.html"
 	},
   "background": {
     "scripts":[  "background.js" ],
-    "persistent":false
+    "persistent":true
   },
   "content_scripts": [ {
       "all_frames": true,

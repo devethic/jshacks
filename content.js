@@ -11,6 +11,14 @@ if (/1fichier/i.test(window.location.hostname)) {
   unFichier();
 }
 
+if (/dl-protect1/i.test(window.location.hostname)) {
+  dlProtect1();
+}
+
+if (/ed-protect/i.test(window.location.hostname)) {
+  edProtect();
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
@@ -62,4 +70,21 @@ function unFichier () {
 function liensTelechargementCom () {
   document.querySelector(".magic").style.display = "block";
   $(".trtbl").hide();
+}
+
+function dlProtect1 () {
+  let a = document.querySelector("input[type=submit].continuer");
+  if (a)
+    a.click();
+  let b = document.querySelector("div.lienet a");
+  if (b)
+    b.click();
+}
+
+function edProtect () {
+  //  let a = document.querySelector('.g-recaptcha iframe');
+  let a = document.querySelector('.g-recaptcha');
+  let b = document.querySelector('[name="submit_captcha"]')
+  if (!a && b)
+    b.click();
 }
