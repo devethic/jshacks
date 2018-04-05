@@ -1,4 +1,5 @@
-var currentTab;
+var currentTabs = new Map();
+var lastUpdatedTab;
 
 chrome.tabs.onCreated.addListener(function(tab) {
   // remove tab opened by specific site for ads
@@ -8,18 +9,32 @@ chrome.tabs.onCreated.addListener(function(tab) {
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    if (/liens-telechargement\.com/i.test(tab.url)) {
-      // we use alarm to delay content script actions because of jQuery
-      // TODO do better
-      currentTab = tab;
-      chrome.alarms.create("liensTelechargementCom", {"delayInMinutes": 0.1}); // ~5 seconds !!!
+    if (/(liens-telechargement\.com|uptobox\.com|1fichier\.com)/i.test(tab.url)) {
+      if(!currentTabs.has(tab.url))
+        currentTabs.set(tab.url, tab);
+      lastUpdatedTab = tab;
+      if (/liens-telechargement\.com/i.test(tab.url)) {
+        // we use alarm to delay content script actions because of jQuery
+        // TODO do better
+        chrome.alarms.create("liensTelechargementCom", {"delayInMinutes": 0.1}); // ~5 seconds !!!
+      }
     }
 });
 
 chrome.alarms.onAlarm.addListener(alarm => {
   //interact with content script
   if (alarm.name == "liensTelechargementCom")
-    chrome.tabs.sendMessage(currentTab.id, "liensTelechargementCom");
+    chrome.tabs.sendMessage(lastUpdatedTab.id, "liensTelechargementCom");
+});
+
+chrome.downloads.onCreated.addListener(downloadItem => {
+  let t = currentTabs.get(downloadItem.referrer);
+  if (t != undefined) {
+    removeTab(/(uptobox\.com|1fichier\.com)/i, t.url, t.id);
+    currentTabs.delete(downloadItem.referrer);
+    console.log("tab removed: "+t.url);
+  }
+  console.log("referrer: "+downloadItem.referrer);
 });
 
 //  chrome.webRequest.onBeforeRequest.addListener(details => {
@@ -33,7 +48,7 @@ chrome.alarms.onAlarm.addListener(alarm => {
 // MARCHE PLUS ?!!!
 chrome.webRequest.onBeforeRedirect.addListener(details => {
   removeTab(/pornhub\.com/i, details.url, details.tabId);
-});
+}, {urls:["<all_urls>"]});
 
 ////////////////////////////////////////////////////////////////////////////////
 

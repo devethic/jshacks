@@ -29,8 +29,12 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 ////////////////////////////////////////////////////////////////////////////////
 
 function uptobox () {
+  // reload while captcha not ended
+  let z = document.querySelector('.download-btn');
+  if (z) z.click();
+
   // activating download button and simulate click
-  let a = document.getElementById('btn_download');
+  let a = document.querySelector('td.cell.countdown-block a.big-button-green-flat');
   if (a) {
     a.disabled = null;
     a.click();

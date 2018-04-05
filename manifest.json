@@ -4,7 +4,7 @@
   "description": "javascript site hacks",
   "version": "0.1",
   "icons": { "32": "32.png","128": "128.png" },
-  "permissions": [ "tabs", "activeTab", "alarms", "webRequest", "webRequestBlocking", "*://*/*" ],
+  "permissions": [ "tabs", "activeTab", "alarms", "webRequest", "downloads", "webRequestBlocking" ],
   "browser_action" : {
 		"default_popup": "popup.html"
 	},
