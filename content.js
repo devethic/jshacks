@@ -31,20 +31,15 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 function uptobox () {
   // reload while captcha not ended
   let z = document.querySelector('.download-btn');
-  if (z) z.click();
-
-  // activating download button and simulate click
-  let a = document.querySelector('td.cell.countdown-block a.big-button-green-flat');
-  if (a) {
-    a.disabled = null;
-    a.click();
+  if (z) {
+    z.click();
+    return;
   }
-
-  // force https !!
-  let o = document.querySelector(".col_name_green a");
-  if (o)  {
-    o.href = o.href.replace(/^http:/,"https:");
-    o.click();
+  // force https and launch download
+  let b = document.querySelector('td>a.big-button-green-flat');
+  if (b) {
+    b.href = b.href.replace(/^http:/,"https:");
+    b.click();
   }
 }
 
