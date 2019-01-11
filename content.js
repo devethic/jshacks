@@ -29,6 +29,10 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 ////////////////////////////////////////////////////////////////////////////////
 
 function uptobox () {
+  let a = document.querySelector('span.red>p');
+  if (a && /sans attendre/.test(a.textContent)) {
+    return;
+  }
   // reload while captcha not ended
   let z = document.querySelector('.download-btn');
   if (z) {
