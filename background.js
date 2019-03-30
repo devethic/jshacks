@@ -18,7 +18,14 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         // TODO do better
         chrome.alarms.create("liensTelechargementCom", {"delayInMinutes": 0.1}); // ~5 seconds !!!
       }
+      return;
     }
+    // remove tab opened by specific site for ads
+    chrome.tabs.get(tab.openerTabId, (tParent) => {
+      if (!/(?:dl-protect1\.com|annuaire-telechargement\.com|^chrome\:\/\/|www.google.com\/search\?)/i.test(tab.url)) {
+        removeTab(/(?:annuaire-telechargement)\.com/i, tParent.url, tab.id);
+      }
+    });
 });
 
 chrome.alarms.onAlarm.addListener(alarm => {
@@ -32,7 +39,6 @@ chrome.downloads.onCreated.addListener(downloadItem => {
   if (t != undefined) {
     removeTab(/(uptobox\.com|1fichier\.com)/i, t.url, t.id);
     currentTabs.delete(downloadItem.referrer);
-    console.log("tab removed: "+t.url);
   }
   console.log("referrer: "+downloadItem.referrer);
 });
@@ -54,6 +60,7 @@ chrome.webRequest.onBeforeRedirect.addListener(details => {
 
 function removeTab (regex, url, tabId) {
   if (regex.test(url)) {
+    console.log("tab " + tabId + " removed : " + url);
     chrome.tabs.remove(tabId);
   }
 }
