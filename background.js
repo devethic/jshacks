@@ -22,7 +22,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     }
     // remove tab opened by specific site for ads
     chrome.tabs.get(tab.openerTabId, (tParent) => {
-      if (!/(?:dl-protect1\.com|annuaire-telechargement\.com|^chrome\:\/\/|www.google.com\/search\?)/i.test(tab.url)) {
+      if (!/(?:dl-protect1\.com|annuaire-telechargement\.com|^chrome\:\/\/|www\.google\.com\/search\?|translate\.google\.com)/i.test(tab.url)) {
         removeTab(/(?:annuaire-telechargement)\.com/i, tParent.url, tab.id);
       }
     });
