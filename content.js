@@ -19,6 +19,11 @@ if (/ed-protect/i.test(window.location.hostname)) {
   edProtect();
 }
 
+if (/extreme-protect/i.test(window.location.hostname)) {
+  extremeProtect();
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
@@ -99,9 +104,37 @@ function dlProtect1 () {
 }
 
 function edProtect () {
-  //  let a = document.querySelector('.g-recaptcha iframe');
-  let a = document.querySelector('.g-recaptcha');
-  let b = document.querySelector('[name="submit_captcha"]')
-  if (!a && b)
-    b.click();
+  // // useless ?
+  // //  let a = document.querySelector('.g-recaptcha iframe');
+  // let a = document.querySelector('.g-recaptcha');
+  // let b = document.querySelector('[name="submit_captcha"]')
+  // if (!a && b){
+  //   console.log("b.click()");
+  //   b.click();
+  //   return;
+  // }
+
+  // click on button "afficher les liens"
+  let c = document.querySelector('#captcha_form>#submit_button[value="Afficher les liens"');
+  if (c){
+    c.click();
+    return;
+  }
+
+  // click on the first link
+  let d = document.querySelector("table.affichier_lien span.lien>a");
+  if (d && d.href)
+    d.click();
+}
+
+function extremeProtect () {
+  let a = document.querySelector(".captcha>#Protect");
+  if (a) {
+    a.click();
+    return;
+  }
+  a = document.querySelector('td>a[href*="uptobox"]');
+  if (a) {
+    a.click();
+  }
 }
