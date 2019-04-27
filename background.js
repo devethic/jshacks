@@ -1,6 +1,14 @@
 var currentTabs = new Map();
 var lastUpdatedTab;
 
+chrome.windows.onCreated.addListener(function (win){
+  // remove all window popup
+  // TODO: try to filter opener's url
+  if (win.type == "popup") {
+    removeWin(win.id);
+  }
+});
+
 chrome.tabs.onCreated.addListener(function(tab) {
   // remove tab opened by specific site for ads
   chrome.tabs.get(tab.openerTabId, (tParent) => {
@@ -22,8 +30,8 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     }
     // remove tab opened by specific site for ads
     chrome.tabs.get(tab.openerTabId, (tParent) => {
-      if (!/(?:dl-protect1\.com|annuaire-telechargement\.com|^chrome\:\/\/|www\.google\.com\/search\?|translate\.google\.com)/i.test(tab.url)) {
-        removeTab(/(?:annuaire-telechargement)\.com/i, tParent.url, tab.id);
+      if (!/(?:dl-protect1\.com|annuaire-telechargement\.com|^chrome\:\/\/|www\.google\.com\/search\?|translate\.google\.com|extreme-d0wn\.net|extreme-protect\.com|ed-protect\.org)/i.test(tab.url)) {
+        removeTab(/(?:annuaire-telechargement\.com|extreme-d0wn\.net)/i, tParent.url, tab.id);
       }
     });
 });
@@ -63,4 +71,9 @@ function removeTab (regex, url, tabId) {
     console.log("tab " + tabId + " removed : " + url);
     chrome.tabs.remove(tabId);
   }
+}
+
+function removeWin(winId) {
+    console.log("window " + winId + " removed : " + "TODO url");
+    chrome.windows.remove(winId);
 }
