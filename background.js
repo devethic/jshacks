@@ -12,28 +12,33 @@ chrome.windows.onCreated.addListener(function (win){
 chrome.tabs.onCreated.addListener(function(tab) {
   // remove tab opened by specific site for ads
   chrome.tabs.get(tab.openerTabId, (tParent) => {
-    removeTab(/(?:liens-telechargement)\.com/i, tParent.url, tab.id);
+    removeTab(/(?:liens-telechargement\.com)/i, tParent.url, tab.id);
   });
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    if (/(liens-telechargement\.com|uptobox\.com|1fichier\.com)/i.test(tab.url)) {
+    if (/(liens-telechargement\.com|uptobox\.com|1fichier\.com|ed-protect\.org)/i.test(tab.url)) {
       if(!currentTabs.has(tab.url))
         currentTabs.set(tab.url, tab);
       lastUpdatedTab = tab;
       if (/liens-telechargement\.com/i.test(tab.url)) {
         // we use alarm to delay content script actions because of jQuery
         // TODO do better
-        chrome.alarms.create("liensTelechargementCom", {"delayInMinutes": 0.1}); // ~5 seconds !!!
+        chrome.alarms.create("liensTelechargementCom", {"delayInMinutes": 1}); // ~5 seconds !!!
+      }
+      else if (/ed-protect\.org/i.test(tab.url)) {
+        chrome.alarms.create("edProtectFuckCaptcha", {"delayInMinutes": 0.1});
       }
       return;
     }
     // remove tab opened by specific site for ads
-    chrome.tabs.get(tab.openerTabId, (tParent) => {
-      if (!/(?:dl-protect1\.com|annuaire-telechargement\.com|^chrome\:\/\/|www\.google\.com\/search\?|translate\.google\.com|extreme-d0wn\.net|extreme-protect\.com|ed-protect\.org)/i.test(tab.url)) {
-        removeTab(/(?:annuaire-telechargement\.com|extreme-d0wn\.net)/i, tParent.url, tab.id);
-      }
-    });
+    if (tab.openerTabId) {
+      chrome.tabs.get(tab.openerTabId, (tParent) => {
+        if (!/(?:dl-protect1\.com|annuaire-telechargement\.com|^chrome\:\/\/|www\.google\.com\/search\?|translate\.google\.com|extreme-d0wn\.net|extreme-protect\.com|ed-protect\.org|uptobox\.com|dl\.free\.fr)/i.test(tab.url)) {
+          removeTab(/(?:annuaire-telechargement\.com|extreme-d0wn\.net|linkcaptcha\.net|extreme-down\.)/i, tParent.url, tab.id);
+        }
+      });
+    }
 });
 
 chrome.alarms.onAlarm.addListener(alarm => {

@@ -27,8 +27,13 @@ if (/extreme-protect/i.test(window.location.hostname)) {
 ////////////////////////////////////////////////////////////////////////////////
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-  if (msg == "liensTelechargementCom" )
+  console.log(msg);
+  if (msg == "liensTelechargementCom" ) {
     liensTelechargementCom();
+  }
+  else if (msg == "edProtectFuckCaptcha") {
+    edProtectFuckCaptcha();
+  }
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -103,6 +108,15 @@ function dlProtect1 () {
     b.click();
 }
 
+function edProtectFuckCaptcha () {
+  console.log("call edProtectFuckCaptcha");
+  // click on button "afficher les liens"
+  let c = document.querySelector('#captcha_form>#submit_button[value="Afficher les liens"');
+  if (c){
+    c.click();
+  }
+}
+
 function edProtect () {
   // // useless ?
   // //  let a = document.querySelector('.g-recaptcha iframe');
@@ -113,13 +127,6 @@ function edProtect () {
   //   b.click();
   //   return;
   // }
-
-  // click on button "afficher les liens"
-  let c = document.querySelector('#captcha_form>#submit_button[value="Afficher les liens"');
-  if (c){
-    c.click();
-    return;
-  }
 
   // click on the first link
   let d = document.querySelector("table.affichier_lien span.lien>a");
