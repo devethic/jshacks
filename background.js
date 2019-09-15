@@ -35,7 +35,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (tab.openerTabId) {
       chrome.tabs.get(tab.openerTabId, (tParent) => {
         if (!/(?:dl-protect1\.com|annuaire-telechargement\.com|^chrome\:\/\/|www\.google\.com\/search\?|translate\.google\.com|extreme-d0wn\.net|extreme-protect\.com|ed-protect\.org|uptobox\.com|dl\.free\.fr)/i.test(tab.url)) {
-          removeTab(/(?:annuaire-telechargement\.com|extreme-d0wn\.net|linkcaptcha\.net|extreme-down\.)/i, tParent.url, tab.id);
+          removeTab(/(?:annuaire-telechargement\.com|extreme-d0wn\.net|linkcaptcha\.net|extreme-down\.|libertyvf\.)/i, tParent.url, tab.id);
         }
       });
     }
