@@ -23,6 +23,13 @@ if (/extreme-protect/i.test(window.location.hostname)) {
   extremeProtect();
 }
 
+if (/zt-protect/i.test(window.location.hostname)) {
+  ztProtect();
+}
+
+if (/linkcaptcha/i.test(window.location.hostname)) {
+  linkcaptcha();
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -141,6 +148,38 @@ function extremeProtect () {
     return;
   }
   a = document.querySelector('td>a[href*="uptobox"]');
+  if (a) {
+    a.click();
+  }
+}
+
+function ztProtect() {
+  let a = document.querySelector('form center>button[type="submit"]');
+  if (a) {
+      a.click();
+      return;
+  }
+  a = document.querySelector('div[role="alert"]>a');
+  if (a) {
+    a.click();
+  }
+}
+
+function linkcaptcha() {
+  // marche pas, il faut rechercher la position de l'élt. cliquable dans le canvas
+  let a = document.querySelector('div#captcha>canvas');
+  if (a) {
+      a.click();
+      return;
+  }
+  a = document.querySelector('span.hidden-links a');
+  if (a) {
+    a.target="";
+    a.click();
+    return;
+  }
+  // free.fr : marche pas...
+  a = document.querySelector('input[type="submit"].form-button');
   if (a) {
     a.click();
   }
