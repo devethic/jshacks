@@ -34,12 +34,25 @@ if (/linkcaptcha/i.test(window.location.hostname)) {
 ////////////////////////////////////////////////////////////////////////////////
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
-  console.log(msg);
   if (msg == "liensTelechargementCom" ) {
     liensTelechargementCom();
   }
   else if (msg == "edProtectFuckCaptcha") {
     edProtectFuckCaptcha();
+  }
+  else if (msg == "adblocker") {
+    // // TODO:
+    // if (document.querySelectorAll("script")) {
+    //   console.log("scripts!!!");
+    //   let scripts = document.querySelectorAll("script");
+    //   for(var i = 0; i < scripts.length; i++)
+    //   if (/ad blocker/.test(scripts[i].innerText)) {
+    //     console.log(window.onload);
+    //     scripts[i].remove();
+    //     window.onload = null;
+    //   }
+    //
+    // }
   }
 });
 
@@ -159,28 +172,28 @@ function ztProtect() {
       a.click();
       return;
   }
-  a = document.querySelector('div[role="alert"]>a');
-  if (a) {
-    a.click();
+  let b = document.querySelector('div[role="alert"]>a');
+  if (b) {
+    b.click();
   }
 }
 
 function linkcaptcha() {
-  // marche pas, il faut rechercher la position de l'élt. cliquable dans le canvas
-  let a = document.querySelector('div#captcha>canvas');
-  if (a) {
-      a.click();
-      return;
-  }
-  a = document.querySelector('span.hidden-links a');
-  if (a) {
-    a.target="";
-    a.click();
-    return;
-  }
-  // free.fr : marche pas...
-  a = document.querySelector('input[type="submit"].form-button');
-  if (a) {
-    a.click();
-  }
+  // // marche pas, il faut rechercher la position de l'élt. cliquable dans le canvas
+  // let a = document.querySelector('div#captcha>canvas');
+  // if (a) {
+  //     a.click();
+  //     return;
+  // }
+  // a = document.querySelector('span.hidden-links a');
+  // if (a) {
+  //   a.target="";
+  //   a.click();
+  //   return;
+  // }
+  // // free.fr : marche pas...
+  // a = document.querySelector('input[type="submit"].form-button');
+  // if (a) {
+  //   a.click();
+  // }
 }
