@@ -80,7 +80,7 @@ function uptobox () {
 function unFichier () {
 
   // do nothing if pending download ?
-  let d = document.querySelector("form>div.ct_warn");
+  let d = document.querySelector("form div.ct_warn");
   if (d && /Sans souscription/i.test(d.innerText)) {
     return;
   }
