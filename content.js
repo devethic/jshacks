@@ -59,8 +59,8 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
 ////////////////////////////////////////////////////////////////////////////////
 
 function uptobox () {
-  let a = document.querySelector('span.red>p');
-  if (a && /sans attendre/.test(a.textContent)) {
+  let a = document.querySelector('span.red p');
+  if (a && (/sans attendre/.test(a.textContent) || /premium/.test(a.textContent))) {
     return;
   }
   // reload while captcha not ended
