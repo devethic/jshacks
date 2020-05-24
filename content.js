@@ -70,10 +70,14 @@ function uptobox () {
     return;
   }
   // force https and launch download
-  let b = document.querySelector('td>a.big-button-green-flat');
+  let b = document.querySelectorAll('td>a.big-button-green-flat');
   if (b) {
-    b.href = b.href.replace(/^http:/,"https:");
-    b.click();
+    b.forEach(e => {
+      if (/téléchargement\n/i.test(e.innerHTML)) {
+        e.href = e.href.replace(/^http:/,"https:");
+        e.click();
+      }
+    })
   }
 }
 
