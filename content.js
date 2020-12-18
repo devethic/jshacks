@@ -83,6 +83,10 @@ function uptobox () {
 
 function unFichier () {
 
+  // do nothing on login page
+  if (/login\.pl/.test(window.location.pathname))
+    return;
+
   // do nothing if pending download ?
   let d = document.querySelector("form div.ct_warn");
   if (d && /Sans souscription/i.test(d.innerText)) {
