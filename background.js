@@ -1,4 +1,4 @@
-var currentTabs = new Map();
+const currentTabs = new Map();
 var lastUpdatedTab;
 
 chrome.windows.onCreated.addListener(function (win){
@@ -18,8 +18,8 @@ chrome.tabs.onCreated.addListener(function(tab) {
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (/(liens-telechargement\.com|uptobox\.com|1fichier\.com|ed-protect\.org)/i.test(tab.url)) {
-      if(!currentTabs.has(tab.url))
-        currentTabs.set(tab.url, tab);
+      if(!currentTabs.has(tab.id))
+        currentTabs.set(tab.id, tab);
       lastUpdatedTab = tab;
       if (/liens-telechargement\.com/i.test(tab.url)) {
         // we use alarm to delay content script actions because of jQuery
@@ -48,12 +48,15 @@ chrome.alarms.onAlarm.addListener(alarm => {
 });
 
 chrome.downloads.onCreated.addListener(downloadItem => {
-  let t = currentTabs.get(downloadItem.referrer);
-  if (t != undefined) {
-    removeTab(/(uptobox\.com|1fichier\.com)/i, t.url, t.id);
-    currentTabs.delete(downloadItem.referrer);
-  }
-  console.log("referrer: "+downloadItem.referrer);
+  // close tab after download started
+  let r = new RegExp(escapeRegex(downloadItem.referrer),"i");
+  currentTabs.forEach((tab, tabId) => {
+    if (r.test(tab.url)) {
+      removeTab(/.*/, tab.url, tab.id);
+      currentTabs.delete(tabId);
+      return;
+    }
+  });
 });
 
 //  chrome.webRequest.onBeforeRequest.addListener(details => {
@@ -81,4 +84,8 @@ function removeTab (regex, url, tabId) {
 function removeWin(winId) {
     console.log("window " + winId + " removed : " + "TODO url");
     chrome.windows.remove(winId);
+}
+
+function escapeRegex(string){
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
