@@ -1,39 +1,34 @@
+let oActionsByHostname = {
+  "/uptobox/i": uptobox,
+  "/1fichier/i": unFichier,
+  "/dl-protect1/i": dlProtect1,
+  "/ed-protect/i": edProtect,
+  "/extreme-protect/i": extremeProtect,
+  "/zt-protect/i": ztProtect,
+  "/linkcaptcha/i": linkcaptcha
+},
+oMutationObs;
 
-//////////////////////////////////////////////
-// !!! JQuery and others "content script" Global objects is not accessible here
-//////////////////////////////////////////////
+// catch DOM changes
+(oMutationObs = new MutationObserver(mutationObsCallback)).observe(
+  document, { childList: true, subtree: true });
 
-if (/uptobox/i.test(window.location.hostname)) {
-  uptobox();
-}
+// apply actions by hostname settings
+Object.entries(oActionsByHostname).forEach((item,i) => {
+  if (eval(item[0]).test(window.location.hostname)) {
+    console.log(item[0]);
+    item[1]();
+    return;
+  }
+});
 
-if (/1fichier/i.test(window.location.hostname)) {
-  unFichier();
-}
-
-if (/dl-protect1/i.test(window.location.hostname)) {
-  dlProtect1();
-}
-
-if (/ed-protect/i.test(window.location.hostname)) {
-  edProtect();
-}
-
-if (/extreme-protect/i.test(window.location.hostname)) {
-  extremeProtect();
-}
-
-if (/zt-protect/i.test(window.location.hostname)) {
-  ztProtect();
-}
-
-if (/linkcaptcha/i.test(window.location.hostname)) {
-  linkcaptcha();
-}
+// TODO
+//window.setInterval('console.log("setInterval");', 1000);
 
 ////////////////////////////////////////////////////////////////////////////////
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+  console.log("content script onMessage = " + msg);
   if (msg == "liensTelechargementCom" ) {
     liensTelechargementCom();
   }
@@ -205,3 +200,14 @@ function linkcaptcha() {
   //   a.click();
   // }
 }
+
+function mutationObsCallback(mutations) {
+  for(let mutation of mutations) {
+    for(let addedNode of mutation.addedNodes) {
+      //if (addedNode.nodeName === "IMG") {
+        console.log(window.location.hostname);
+        console.log("Inserted node", addedNode);
+        //}
+      }
+    }
+  }
